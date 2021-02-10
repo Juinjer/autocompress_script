@@ -1,0 +1,1 @@
+just a python script to automatically compress lectures

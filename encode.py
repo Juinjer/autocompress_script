@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-import getpass
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 import time
-from keyboard import press
-inp = "/home/{}/Downloads".format(getpass.getuser())
-output ="/home/{}/Downloads/out".format(getpass.getuser())
+import keyboard
+
+inp = os.environ.get('inp')
+output = os.environ.get('output')
+remote = os.environ.get('remote')
+adress = os.environ.get('adress')
+preset = os.environ.get('preset')
 if not os.path.isdir(inp+ "/in"):
     os.mkdir(inp+"/in")
 if not os.path.isdir(output):
@@ -19,12 +25,16 @@ while 1:
     if len(files)>0 and len(processing)<1:
         first = files.pop()
         processing.append(first)
-        st = "HandBrakeCLI -i {0}/in/{1} -o {2}/{1} --preset-import-file {0}/Stef_test_nvid.json -Z 'Stef_test_nvid'".format(inp,first,output)
+        st = "HandBrakeCLI -i {0}/in/{1} -o {2}/{1} --preset-import-file {0}/{4}.json -Z '{4}'".format(inp,first,output, preset)
         os.system(st)
         print(st)
-        #time.sleep(round(duration/2))
-        press('enter')
+        keyboard.press('enter')
         processing.pop()
         os.system("rm {0}/in/{1}".format(inp,first))
+        try:
+            os.system('scp "{0}/{2}" "{3}:{1}"'.format(output,remote,first, adress))
+        except:
+            print("Client not available")
+
     else :
         time.sleep(30)

@@ -1,4 +1,5 @@
 in
 .vscode
 out
-.env
+config.py
+__pycache__

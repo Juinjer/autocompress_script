@@ -1,0 +1,5 @@
+input_dir=""
+output_dir=""
+remote_dir=""
+scp_adress=""
+handbrake_preset=""
